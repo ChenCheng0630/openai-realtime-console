@@ -9,9 +9,10 @@
  * You can run it with `npm run relay`, in parallel with `npm start`
  */
 const LOCAL_RELAY_SERVER_URL: string =
-  process.env.REACT_APP_LOCAL_RELAY_SERVER_URL || '';
+  process.env.REACT_APP_LOCAL_RELAY_SERVER_URL ||
+  'ws://earnest-flexibility.railway.internal:8081';
 
-console.log('LOCAL_RELAY_SERVER_URL', LOCAL_RELAY_SERVER_URL);
+console.log(process.env);
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 
