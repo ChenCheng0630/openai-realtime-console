@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_LOCAL_RELAY_SERVER_URL=ws://relay:8081
+    depends_on:
+      - relay
+
+  relay:
+    build:
+      context: .
+      dockerfile: relay-server/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - PORT=8081
