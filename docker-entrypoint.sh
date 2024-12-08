@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# print env
+printenv
+
 # Start the relay server in the background
 node relay-server/index.js &
 
