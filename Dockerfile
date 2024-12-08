@@ -29,7 +29,7 @@ RUN npm install --production
 # Copy built React app and relay server
 COPY --from=builder /app/build ./build
 COPY relay-server ./relay-server
-COPY .env ./.env
+# COPY .env ./.env
 
 # Install serve to host the static files
 RUN npm install -g serve
