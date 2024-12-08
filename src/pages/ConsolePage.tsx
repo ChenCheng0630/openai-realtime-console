@@ -10,7 +10,7 @@
  */
 const LOCAL_RELAY_SERVER_URL: string =
   process.env.REACT_APP_LOCAL_RELAY_SERVER_URL ||
-  'ws://earnest-flexibility.railway.internal:8081';
+  'wss://earnest-flexibility.railway.internal:8081';
 
 console.log(process.env);
 
