@@ -11,6 +11,8 @@
 const LOCAL_RELAY_SERVER_URL: string =
   process.env.REACT_APP_LOCAL_RELAY_SERVER_URL || '';
 
+console.log('LOCAL_RELAY_SERVER_URL', LOCAL_RELAY_SERVER_URL);
+
 import { useEffect, useRef, useCallback, useState } from 'react';
 
 import { RealtimeClient } from '@openai/realtime-api-beta';
