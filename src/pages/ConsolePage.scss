@@ -52,6 +52,10 @@
         padding-bottom: 4px;
         position: relative;
       }
+      .content-block-status {
+        padding-top: 4px;
+        padding-bottom: 4px;
+      }
       .content-block-body {
         color: #6e6e7f;
         position: relative;
@@ -116,12 +120,15 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      height: 100%;
+      gap: 16px;
       & > div {
         flex-grow: 1;
       }
       & > .content-actions {
-        flex-grow: 0;
-        flex-shrink: 0;
+        // flex-grow: 0;
+        // flex-shrink: 0;
+        max-height: 45px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -135,12 +142,13 @@
       }
       .conversation {
         display: flex;
-        flex-shrink: 0;
+        // flex-shrink: 0;
         width: 100%;
         overflow: hidden;
-        height: 200px;
+        // height: 200px;
         min-height: 0;
-        max-height: 200px;
+        // max-height: 100%;
+        // height: 100%;
         border-top: 1px solid #e7e7e7;
       }
     }
@@ -177,7 +185,7 @@
       position: relative;
       text-align: left;
       gap: 16px;
-      width: 80px;
+      width: 60px;
       flex-shrink: 0;
       margin-right: 16px;
       &.user {
@@ -188,9 +196,14 @@
       }
     }
     .speaker-content {
+      width: 100%;
       color: #18181b;
       overflow: hidden;
       word-wrap: break-word;
+
+      audio {
+        width: 100%;
+      }
     }
   }
 

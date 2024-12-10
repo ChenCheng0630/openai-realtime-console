@@ -1,5 +1,5 @@
 import { WebSocketServer } from 'ws';
-import { RealtimeClient } from '@openai/realtime-api-beta';
+import { RealtimeClient } from './realtime-api-beta/lib/client.js';
 
 export class RealtimeRelay {
   constructor(apiKey) {

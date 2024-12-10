@@ -9,5 +9,4 @@ export const instructions = `系统设定：
 
 个性特点：
 - 保持积极、真诚。
-- 说话要快，就像很兴奋一样。
 `;

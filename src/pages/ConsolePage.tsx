@@ -9,20 +9,19 @@
  * You can run it with `npm run relay`, in parallel with `npm start`
  */
 const LOCAL_RELAY_SERVER_URL: string =
-  process.env.REACT_APP_LOCAL_RELAY_SERVER_URL ||
-  'wss://demo.relay.yidianxingchen.com';
+  process.env.REACT_APP_LOCAL_RELAY_SERVER_URL || '';
 
 console.log(process.env);
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 
-import { RealtimeClient } from '@openai/realtime-api-beta';
-import { ItemType } from '@openai/realtime-api-beta/dist/lib/client.js';
+import { RealtimeClient } from '../lib/wavtools/realtime-api-beta/lib/client.js';
+import { ItemType } from '../lib/wavtools/realtime-api-beta/lib/client.js';
 import { WavRecorder, WavStreamPlayer } from '../lib/wavtools/index.js';
 import { instructions } from '../utils/conversation_config.js';
 import { WavRenderer } from '../utils/wav_renderer';
 
-import { X, Edit, Zap, ArrowUp, ArrowDown } from 'react-feather';
+import { X, Edit, Zap, ArrowUp, ArrowDown, PhoneCall } from 'react-feather';
 import { Button } from '../components/button/Button';
 import { Toggle } from '../components/toggle/Toggle';
 import { Map } from '../components/Map';
@@ -115,6 +114,14 @@ export function ConsolePage() {
    */
   const [items, setItems] = useState<ItemType[]>([]);
   const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
+
+  const roleMapping: { [key: string]: string } = {
+    user: '用户',
+    assistant: '智能客服',
+    system: '系统',
+    undefined: '其他',
+  };
+
   const [expandedEvents, setExpandedEvents] = useState<{
     [key: string]: boolean;
   }>({});
@@ -184,13 +191,13 @@ export function ConsolePage() {
 
     // Connect to realtime API
     await client.connect();
-    // client.sendUserMessageContent([
-    //   {
-    //     type: `input_text`,
-    //     text: `你好，请问你是哪位？`,
-    //     // text: `For testing purposes, I want you to list ten car brands. Number each item, e.g. "one (or whatever number you are one): the item name".`
-    //   },
-    // ]);
+    client.sendUserMessageContent([
+      {
+        type: `input_text`,
+        text: `你好，请问你是哪位？`,
+        // text: `For testing purposes, I want you to list ten car brands. Number each item, e.g. "one (or whatever number you are one): the item name".`
+      },
+    ]);
 
     if (client.getTurnDetectionType() === 'server_vad') {
       await wavRecorder.record((data) => client.appendInputAudio(data.mono));
@@ -387,7 +394,7 @@ export function ConsolePage() {
         threshold: 0.9,
         prefix_padding_ms: 2000,
       },
-      voice: 'alloy',
+      voice: 'ash',
     });
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: 'whisper-1' } });
@@ -535,7 +542,7 @@ export function ConsolePage() {
       </div>
       <div className="content-main">
         <div className="content-logs">
-          <div className="content-block events">
+          {/* <div className="content-block events">
             <div className="visualization">
               <div className="visualization-entry client">
                 <canvas ref={clientCanvasRef} />
@@ -546,7 +553,7 @@ export function ConsolePage() {
             </div>
             <div className="content-block-title">events</div>
             <div className="content-block-body" ref={eventsScrollRef}>
-              {!realtimeEvents.length && `awaiting connection...`}
+              {!realtimeEvents.length && `等待连接中...`}
               {realtimeEvents.map((realtimeEvent, i) => {
                 const count = realtimeEvent.count;
                 const event = { ...realtimeEvent.event };
@@ -608,19 +615,25 @@ export function ConsolePage() {
                 );
               })}
             </div>
-          </div>
+          </div> */}
           <div className="content-block conversation">
-            <div className="content-block-title">conversation</div>
+            {/* <div className="content-block-title">对话记录</div> */}
             <div className="content-block-body" data-conversation-content>
-              {!items.length && `awaiting connection...`}
+              <div className="content-block-status">
+                {!items.length ? (
+                  <div>等待连接中...</div>
+                ) : (
+                  <div>已链接，请开始对话</div>
+                )}
+              </div>
               {items.map((conversationItem, i) => {
                 return (
                   <div className="conversation-item" key={conversationItem.id}>
                     <div className={`speaker ${conversationItem.role || ''}`}>
                       <div>
-                        {(
-                          conversationItem.role || conversationItem.type
-                        ).replaceAll('_', ' ')}
+                        {conversationItem.role
+                          ? roleMapping[conversationItem.role]
+                          : '其他'}
                       </div>
                       <div
                         className="close"
@@ -661,12 +674,12 @@ export function ConsolePage() {
                               '(truncated)'}
                           </div>
                         )}
-                      {conversationItem.formatted.file && (
+                      {/* {conversationItem.formatted.file && (
                         <audio
                           src={conversationItem.formatted.file.url}
                           controls
                         />
-                      )}
+                      )} */}
                     </div>
                   </div>
                 );
@@ -674,27 +687,27 @@ export function ConsolePage() {
             </div>
           </div>
           <div className="content-actions">
-            <Toggle
+            {/* <Toggle
               defaultValue={'server_vad'}
-              labels={['manual', 'vad']}
+              labels={['手动', '自动']}
               values={['none', 'server_vad']}
               onChange={(_, value) => changeTurnEndType(value)}
             />
             <div className="spacer" />
             {isConnected && canPushToTalk && (
               <Button
-                label={isRecording ? 'release to send' : 'push to talk'}
+                label={isRecording ? '松开发送' : '按住说话'}
                 buttonStyle={isRecording ? 'alert' : 'regular'}
                 disabled={!isConnected || !canPushToTalk}
                 onMouseDown={startRecording}
                 onMouseUp={stopRecording}
               />
-            )}
-            <div className="spacer" />
+            )} */}
+            {/* <div className="spacer" /> */}
             <Button
-              label={isConnected ? 'disconnect' : 'connect'}
+              label={isConnected ? '挂断' : '拨打'}
               iconPosition={isConnected ? 'end' : 'start'}
-              icon={isConnected ? X : Zap}
+              icon={isConnected ? X : PhoneCall}
               buttonStyle={isConnected ? 'regular' : 'action'}
               onClick={
                 isConnected ? disconnectConversation : connectConversation
