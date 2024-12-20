@@ -17,7 +17,7 @@ export class RealtimeAPI extends RealtimeEventHandler {
     if (globalThis.document && this.apiKey) {
       if (!dangerouslyAllowAPIKeyInBrowser) {
         throw new Error(
-          `Can not provide API key in the browser without "dangerouslyAllowAPIKeyInBrowser" set to true`,
+          `Can not provide API key in the browser without "dangerouslyAllowAPIKeyInBrowser" set to true`
         );
       }
     }
@@ -56,7 +56,7 @@ export class RealtimeAPI extends RealtimeEventHandler {
    * @param {{model?: string}} [settings]
    * @returns {Promise<true>}
    */
-  async connect({ model } = { model: 'gpt-4o-realtime-preview-2024-10-01' }) {
+  async connect({ model } = { model: 'gpt-4o-mini-realtime-preview' }) {
     if (!this.apiKey && this.url === this.defaultUrl) {
       console.warn(`No apiKey provided for connection to "${this.url}"`);
     }
@@ -69,7 +69,7 @@ export class RealtimeAPI extends RealtimeEventHandler {
        */
       if (this.apiKey) {
         console.warn(
-          'Warning: Connecting using API key in the browser, this is not recommended',
+          'Warning: Connecting using API key in the browser, this is not recommended'
         );
       }
       const WebSocket = globalThis.WebSocket;
@@ -122,7 +122,7 @@ export class RealtimeAPI extends RealtimeEventHandler {
             request.setHeader('OpenAI-Beta', 'realtime=v1');
             request.end();
           },
-        },
+        }
       );
       ws.on('message', (data) => {
         const message = JSON.parse(data.toString());
